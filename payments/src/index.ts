@@ -1,6 +1,8 @@
 import { app } from './app';
 import mongoose from 'mongoose';
 import { natsu } from '@sirjhep/ticketing-common';
+import { OrderCreatedListener } from './events/order-created-listener';
+import { OrderCancelledListener } from './events/order-cancelled-listener';
 
 mongoose.set('strictQuery', false);
 
@@ -20,6 +22,10 @@ const start = async () => {
     );
 
     await mongoose.connect(process.env.DB_URI);
+
+    new OrderCreatedListener(natsu.client).listen();
+
+    new OrderCancelledListener(natsu.client).listen();
 
     app.listen(3000, () => {
       console.log('Tickets Services listening to port 3000!');
