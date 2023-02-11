@@ -1,20 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: orders-depl
+  name: payments-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: orders
+      app: payments
   template:
     metadata:
       labels:
-        app: orders
+        app: payments
     spec:
       containers:
-        - name: orders
-          image: us.gcr.io/ticketing-dev-376000/orders
+        - name: payments
+          image: sirjhep/ticketing-payments
+          imagePullPolicy: Never
           env:
             - name: NATS_CLIENT_ID
               valueFrom:
@@ -32,19 +33,19 @@ spec:
             - name: DB_URI
               valueFrom:
                 secretKeyRef:
-                  name: auth-secret
+                  name: payments-secret
                   key: DB_URI
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: orders-srv
+  name: payments-srv
 spec:
   type: ClusterIP
   selector:
-    app: orders
+    app: payments
   ports:
-    - name: orders
+    - name: payments
       protocol: TCP
       port: 3000
       targetPort: 3000
@@ -52,28 +53,28 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: orders-mongo-depl
+  name: payments-mongo-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: orders-mongo
+      app: payments-mongo
   template:
     metadata:
       labels:
-        app: orders-mongo
+        app: payments-mongo
     spec:
       containers:
-        - name: orders-mongo
+        - name: payments-mongo
           image: mongo
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: orders-mongo-srv
+  name: payments-mongo-srv
 spec:
   selector:
-    app: orders-mongo
+    app: payments-mongo
   ports:
     - name: db
       protocol: TCP

@@ -8,6 +8,7 @@ import {
 } from '@sirjhep/ticketing-common';
 import cors from 'cors';
 import cookieSession from 'cookie-session';
+import createChargeRouter from './routes/new';
 
 export const app = express();
 
@@ -25,7 +26,7 @@ app.use(
 app.use(currentUser);
 
 // routers here
-// app.use([Routers])
+app.use(createChargeRouter);
 
 app.all('*', () => {
   throw new NotFoundError();
