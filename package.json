@@ -7,7 +7,8 @@
     "start_local": "kubectl apply -f k8s_local/ & kubectl get pods",
     "end_local": "kubectl delete -f k8s_local/",
     "skadg": "skaffold dev --module GoogleCloudSkaffold",
-    "skadl": "skaffold dev --module LocalSkaffold"
+    "skadl": "skaffold dev --module LocalSkaffold",
+    "update_common": "cd auth & npm update @sirjhep/ticketing-common & cd ../expiration & npm update @sirjhep/ticketing-common & cd ../orders & npm update @sirjhep/ticketing-common & cd ../payments & npm update @sirjhep/ticketing-common & cd ../tickets & npm update @sirjhep/ticketing-common & cd .."
   },
   "keywords": [],
   "author": "Jephthah M. Orobia",
