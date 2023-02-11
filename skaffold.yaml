@@ -1,0 +1,98 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+metadata:
+  name: GoogleCloudSkaffold
+deploy:
+  kubectl:
+    manifests:
+      - ./k8s/*
+build:
+  googleCloudBuild:
+    projectId: ticketing-dev-376000
+  artifacts:
+    - image: us.gcr.io/ticketing-dev-376000/client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: '**/*.js'
+    - image: us.gcr.io/ticketing-dev-376000/auth
+      context: auth
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: us.gcr.io/ticketing-dev-376000/tickets
+      context: tickets
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: us.gcr.io/ticketing-dev-376000/orders
+      context: orders
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+
+---
+apiVersion: skaffold/v2alpha3
+kind: Config
+metadata:
+  name: LocalSkaffold
+deploy:
+  kubectl:
+    manifests:
+      - ./k8s_local/*
+build:
+  local:
+    push: false
+  artifacts:
+    - image: sirjhep/ticketing-client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: '**/*.js'
+    - image: sirjhep/ticketing-auth
+      context: auth
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: sirjhep/ticketing-tickets
+      context: tickets
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: sirjhep/ticketing-orders
+      context: orders
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: sirjhep/ticketing-expiration
+      context: expiration
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .

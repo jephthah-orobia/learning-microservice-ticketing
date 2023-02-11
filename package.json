@@ -1,0 +1,17 @@
+{
+  "name": "ticketing",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "kubectl apply -f k8s/ & kubectl get pods",
+    "end": "kubectl delete -f k8s/",
+    "start_local": "kubectl apply -f k8s_local/ & kubectl get pods",
+    "end_local": "kubectl delete -f k8s_local/",
+    "skadg": "skaffold dev --module GoogleCloudSkaffold",
+    "skadl": "skaffold dev --module LocalSkaffold"
+  },
+  "keywords": [],
+  "author": "Jephthah M. Orobia",
+  "license": "ISC",
+  "main": "index.js",
+  "description": ""
+}
